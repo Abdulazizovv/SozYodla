@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 class Subject(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     is_public = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -14,7 +14,7 @@ class Subject(models.Model):
         return self.title
     
 class Word(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
     word = models.CharField(max_length=255)
     slug = models.SlugField()
@@ -31,5 +31,5 @@ class Word(models.Model):
         return super().save(*args, **kwargs)
     
     def __str__(self):
-        return self.word + " - " + self.translated + " @" + self.author.first_name
+        return self.word + " - " + self.translated
     
